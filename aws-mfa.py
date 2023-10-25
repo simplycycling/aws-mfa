@@ -32,4 +32,4 @@ if __name__ == '__main__':
     filepath = '/home/me/.mfa'
     strip_values_from_mfa_file(filepath)
     unset_aws_env_variables()
-    print("Values stripped and environment variables removed!")
+    print("Values stripped and environment variables removed! Remember to reload your shell.")
