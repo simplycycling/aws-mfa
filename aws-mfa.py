@@ -2,18 +2,15 @@ import os
 
 
 def strip_values_from_mfa_file(filepath):
-    stripped_lines = []
+    with open(filepath, 'r') as file:
+        lines = file.readlines()
 
-    with open(filepath, 'r') as f:
-        for line in f.readlines():
-            if line.startswith('export AWS_ACCESS_KEY_ID'):
-                stripped_lines.append('export AWS_ACCESS_KEY_ID=\n')
-            elif line.startswith('export AWS_SECRET_ACCESS_KEY'):
-                stripped_lines.append('export AWS_SECRET_ACCESS_KEY=\n')
-            elif line.startswith('export AWS_SESSION_TOKEN'):
-                stripped_lines.append('export AWS_SESSION_TOKEN=\n')
-            else:
-                stripped_lines.append(line)
+    # Modify the lines in memory to strip out the values after the equals sign.
+    updated_lines = []
+    for line in lines:
+        if any(var in line for var in ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN']):
+            line = line.split('=')[0] + '=\n'
+        updated_lines.append(line)
 
     # Write the stripped lines back to the file
     with open(filepath, 'w') as f:
