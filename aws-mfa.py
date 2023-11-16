@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     unset_aws_credentials()
     serial_number = # your mfa serial number
-    filepath = # your mfa file path
+    filepath = # the path to your aws credentials file
 
     token = input("Enter MFA token: ")
 
