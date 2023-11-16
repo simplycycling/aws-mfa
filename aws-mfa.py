@@ -1,32 +1,43 @@
+import sys
+import boto3
 import os
 
+def unset_aws_credetials():
+    os.environ.pop('AWS_ACCESS_KEY_ID', None)
+    os.environ.pop('AWS_SECRET_ACCESS_KEY', None)
+    os.environ.pop('AWS_SESSION_TOKEN', None)
 
-def strip_values_from_mfa_file(filepath):
-    with open(filepath, 'r') as file:
-        lines = file.readlines()
 
-    # Modify the lines in memory to strip out the values after the equals sign.
-    updated_lines = []
-    for line in lines:
-        if any(var in line for var in ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN']):
-            line = line.split('=')[0] + '=\n'
-        updated_lines.append(line)
+def get_mfa_tokens(serial_code, token_code):
+    sts = boto3.client('sts')
+    response = sts.get_session_token(
+        DurationSeconds=86400,
+        SerialNumber=serial_code,
+        TokenCode=token_code
+    )
 
-    # Write the stripped lines back to the file
+    return response['Credentials']
+
+
+def update_mfa_file(filepath, credentials):
     with open(filepath, 'w') as f:
-        f.writelines(stripped_lines)
-
-
-def unset_aws_env_variables():
-    aws_env_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN']
-
-    for var in aws_env_vars:
-        if var in os.environ:
-            del os.environ[var]
+        f.write(f"export AWS_ACCESS_KEY_ID={credentials['AccessKeyId']}\n")
+        f.write(f"export AWS_SECRET_ACCESS_KEY={credentials['SecretAccessKey']}\n")
+        f.write(f"export AWS_SESSION_TOKEN={credentials['SessionToken']}\n")
 
 
 if __name__ == '__main__':
-    filepath = '/home/me/.mfa'
-    strip_values_from_mfa_file(filepath)
-    unset_aws_env_variables()
-    print("Values stripped and environment variables removed! Remember to reload your shell.")
+
+    unset_aws_credetials()
+    serial_number = # your mfa serial number
+    filepath = # your mfa file path
+
+    token = input("Enter MFA token: ")
+
+    if not token:
+        print("No token provided. Exiting.")
+        sys.exit(1)
+
+credentials = get_mfa_tokens(serial_number, token)
+update_mfa_file(filepath, credentials)
+print("MFA token updated!")
