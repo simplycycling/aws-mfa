@@ -2,7 +2,8 @@ import sys
 import boto3
 import os
 
-def unset_aws_credetials():
+
+def unset_aws_credentials():
     os.environ.pop('AWS_ACCESS_KEY_ID', None)
     os.environ.pop('AWS_SECRET_ACCESS_KEY', None)
     os.environ.pop('AWS_SESSION_TOKEN', None)
@@ -28,7 +29,7 @@ def update_mfa_file(filepath, credentials):
 
 if __name__ == '__main__':
 
-    unset_aws_credetials()
+    unset_aws_credentials()
     serial_number = # your mfa serial number
     filepath = # your mfa file path
 
