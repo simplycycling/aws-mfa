@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "aws-mfa"
+version = "0.1.0"
+description = "Authenticates via MFA with AWS"
+authors = ["Roger Sherman <rsherman@linux.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+boto3 = "^1.35.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
