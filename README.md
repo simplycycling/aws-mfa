@@ -41,7 +41,7 @@ In my aliases file, it looks like this:
 
 Now I just run `mfa`, enter the token, and my session is restarted, with the proper authentication.
 
-Step 3: Start tmux (Optional)
+Step 3: Optional - Start tmux (if you didn't use the `mfa` alias)
 If you use tmux, start a new session:
 
 ```
