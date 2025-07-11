@@ -1,15 +1,32 @@
-[tool.poetry]
+[project]
 name = "aws-mfa"
 version = "0.1.0"
 description = "Authenticates via MFA with AWS"
-authors = ["Roger Sherman <rsherman@linux.com>"]
+authors = [
+    {name = "Roger Sherman", email = "rsherman@linux.com"}
+]
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.35.6",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-boto3 = "^1.35.6"
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+]
 
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+include = ["aws-mfa.py"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-mock>=3.14.1",
+]

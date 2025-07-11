@@ -30,8 +30,8 @@ def update_mfa_file(filepath, credentials):
 if __name__ == '__main__':
 
     unset_aws_credentials()
-    serial_number = # your mfa serial number
-    filepath = # the path to your aws credentials file
+    serial_number = "arn:aws:iam::123456789012:mfa/your-username"  # your mfa serial number
+    filepath = "/tmp/aws_credentials.sh"  # the path to your aws credentials file
 
     token = input("Enter MFA token: ")
 
@@ -39,6 +39,6 @@ if __name__ == '__main__':
         print("No token provided. Exiting.")
         sys.exit(1)
 
-credentials = get_mfa_tokens(serial_number, token)
-update_mfa_file(filepath, credentials)
-print("MFA token updated!")
+    credentials = get_mfa_tokens(serial_number, token)
+    update_mfa_file(filepath, credentials)
+    print("MFA token updated!")
